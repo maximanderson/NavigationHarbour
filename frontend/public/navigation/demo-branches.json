@@ -1,0 +1,78 @@
+[
+  {
+    "title": "REGIONS",
+    "branches": [
+      {
+        "title": "AREA - NORTHVALE",
+        "navID": "demo-aquaville-water-network-demo-area-northvale"
+      },
+      {
+        "title": "AREA - WESTMERE",
+        "navID": "demo-aquaville-water-network-demo-area-westmere"
+      },
+      {
+        "title": "AREA - SOUTHREACH",
+        "navID": "demo-aquaville-water-network-demo-area-southreach"
+      }
+    ]
+  },
+  {
+    "title": "PLANTS",
+    "branches": [
+      {
+        "title": "FROSTFORD TREATMENT PLANT",
+        "navID": "demo-aquaville-water-network-demo-area-northvale-drinking-water-frostford-treatment-plant"
+      },
+      {
+        "title": "SEABROOK TREATMENT PLANT",
+        "navID": "demo-aquaville-water-network-demo-area-westmere-drinking-water-seabrook-treatment-plant"
+      },
+      {
+        "title": "GOLDCREST TREATMENT PLANT",
+        "navID": "demo-aquaville-water-network-demo-area-southreach-drinking-water-goldcrest-treatment-plant"
+      },
+      {
+        "title": "CORAL BAY DESALINATION (DEMO)",
+        "navID": "demo-aquaville-water-network-demo-desalination-plants-coral-bay-desalination-demo"
+      },
+      {
+        "title": "SALTMARSH DESALINATION (DEMO)",
+        "navID": "demo-aquaville-water-network-demo-desalination-plants-saltmarsh-desalination-demo"
+      }
+    ]
+  },
+  {
+    "title": "MONITORING",
+    "branches": [
+      {
+        "title": "FLOW STATIONS",
+        "navID": "demo-aquaville-water-network-demo-network-monitoring-flow-stations"
+      },
+      {
+        "title": "RAIN GAUGE STATIONS",
+        "navID": "demo-aquaville-water-network-demo-network-monitoring-rain-gauge-stations"
+      },
+      {
+        "title": "LEVEL MONITORING STATIONS",
+        "navID": "demo-aquaville-water-network-demo-network-monitoring-level-monitoring-stations"
+      },
+      {
+        "title": "MAJOR PIPELINES",
+        "navID": "demo-aquaville-water-network-demo-major-pipelines"
+      },
+      {
+        "title": "WATER QUALITY",
+        "navID": "demo-aquaville-water-network-demo-water-quality"
+      }
+    ]
+  },
+  {
+    "title": "Home",
+    "branches": [
+      {
+        "title": "Restore menu",
+        "navID": "demo-aquaville-water-network-demo"
+      }
+    ]
+  }
+]

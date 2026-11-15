@@ -1,0 +1,62 @@
+PORTAL CORE - DEMONSTRATION PACKAGE
+===================================
+
+This folder is a complete, ready-to-run Portal Core for Windows x64. You do NOT need to install
+.NET, Node.js, Visual Studio or IIS. All data in this package is fictional ("Aquaville").
+
+Do not run it from inside the ZIP. Extract the ZIP first (right-click > Extract All), for example to
+C:\PortalCore, so that this file is at C:\PortalCore\START-HERE.txt. Use a path without spaces.
+
+QUICK START (interactive, about 2 minutes)
+------------------------------------------
+Open PowerShell in the PortalCore folder (Shift + right-click in the folder > "Open PowerShell window here"):
+
+  1. Create your private configuration from the sample:
+
+       Copy-Item conf\server.sample.ini conf\server.ini
+
+  2. Create the (empty) database:
+
+       .\bin\PortalCore.Api.exe --home . --init-db
+
+  3. Check the configuration (optional):
+
+       .\bin\PortalCore.Api.exe --home . --check-config
+
+  4. Start Portal Core:
+
+       $env:ASPNETCORE_ENVIRONMENT = "Production"
+       .\bin\PortalCore.Api.exe --home .
+
+  5. Open a browser at   http://127.0.0.1:5247/
+     Stop Portal Core with Ctrl+C in the PowerShell window.
+
+If Windows SmartScreen or antivirus warns about PortalCore.Api.exe, the file is unsigned. Verify the
+download first (see "Verify the download" in docs\release-package.md), then choose "More info > Run anyway"
+only if your IT policy allows it.
+
+WHAT YOU SHOULD SEE
+-------------------
+Three tabs: Operations (a navigation tree with search), Regions (a Branch Screen: pick a region and the
+tree narrows to it; "Restore menu" shows everything again) and Reports (a static page). Clicking a leaf
+item is recorded by the Usage Monitor in data\portalcore.db. The content area stays empty: no pages are
+loaded into frames in this demonstration.
+
+WHERE THINGS ARE
+----------------
+  bin\        the application (do not edit)
+  conf\       server.sample.ini (copy it to server.ini and edit server.ini only)
+  public\     config\portal.ini, navigation\*.json, content\*.html  (the only web-visible files)
+  data\       the SQLite database (private)
+  logs\       log files
+  backups\    database backups (private)
+  certs\      certificates for HTTPS (private)
+  ai\         sample AI files (the AI assistant is not used in this demonstration)
+  docs\       guides - start with docs\release-package.md
+
+NEXT STEPS (see docs\)
+----------------------
+  Run as a Windows service with NSSM ..... docs\windows-deployment.md, section 5
+  HTTPS .................................. docs\server-configuration.md, "HTTP and HTTPS"
+  Backups ................................ docs\backup-restore.md
+  Troubleshooting ........................ docs\release-package.md and docs\windows-deployment.md

@@ -1,0 +1,62 @@
+repomix-output.xml
+
+# SQLite runtime databases
+portalcore.db
+*.db-wal
+*.db-shm
+
+# Build archives and temporary files
+*.zip
+tmp_tosend/
+
+# Private server configuration (only conf/server.sample.ini is committed)
+**/conf/server.ini
+
+# Database backups (contain Usage Monitor data; never commit)
+**/backups/
+
+# Application log files
+logs/
+**/logs/
+
+# Standalone build output (scripts/build-standalone.*), including release ZIPs and checksums
+artifacts/
+*.sha256
+
+# More SQLite files (portalcore.db, *.db-wal and *.db-shm are listed above)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Certificates and private keys. Never commit them.
+*.pfx
+*.p12
+*.pem
+*.key
+*.crt
+*.cer
+*.jks
+certs/
+**/certs/
+
+# Environment files and local secrets
+.env
+.env.*
+**/.env
+**/.env.*
+secrets.json
+
+# Local archives and debug symbols
+*.7z
+*.rar
+*.tgz
+*.tar.gz
+*.pdb
+
+# .NET build output in every project (PortalCore.Api and the test projects each have their own bin/ and obj/)
+bin/
+obj/
+
+# Machine-local extra scan rules (names of internal systems). Never commit.
+scripts/release-scan-private.txt

@@ -1,0 +1,20 @@
+You are answering questions using extracted knowledge from PI Vision display JSON files.
+
+The context may include PI Vision display names, symbols, PI tags, PI servers, static labels, calculation sources, multistate indicators, and display summary information.
+
+Use only the provided PI Vision context to answer the question.
+
+Preserve PI tag names exactly as shown.
+
+Do not invent equipment relationships, process flows, or operational meanings that are not present in the context.
+
+If the answer cannot be found in the PI Vision context, say:
+"Not found in the provided PI Vision context."
+
+Context:
+{context}
+
+Question:
+{question}
+
+Answer:

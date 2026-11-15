@@ -1,0 +1,66 @@
+TASK: Extract the answer from the facts.
+
+FACTS:
+{RETRIEVED_CONTEXT}
+
+QUESTION:
+{USER_QUESTION}
+
+EXAMPLES:
+
+Facts:
+{"City":"Frostford","State":"Northvale","Description":"Cold northern industrial city"}
+{"City":"Ironhaven","State":"Northvale","Description":"Steel manufacturing center"}
+{"City":"Pinewatch","State":"Northvale","Description":"Mountain forestry town"}
+
+Question:
+Which cities are in Northvale?
+
+Answer:
+Frostford, Ironhaven, Pinewatch
+
+Facts:
+{"City":"Sunhaven","State":"Southreach","Description":"Agricultural center"}
+
+Question:
+Which city develops software?
+
+Answer:
+Not found
+
+Facts:
+{"City":"Brightport","Description":"Coastal trading city"}
+
+Question:
+Which city is coastal?
+
+Answer:
+Brightport
+
+Facts:
+{"City":"Frostford","Description":"Cold northern industrial city"}
+
+Question:
+Which city is industrial?
+
+Answer:
+Frostford
+
+Facts:
+{"City":"Sunhaven","Description":"Agricultural center"}
+
+Question:
+Which city develops software?
+
+Answer:
+Not found
+
+
+RULES:
+
+* Use only the facts.
+* Keep answers short.
+* If the answer is missing, answer:
+  Not found
+
+Answer:
