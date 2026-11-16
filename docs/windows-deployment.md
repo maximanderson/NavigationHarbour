@@ -2,7 +2,8 @@
 
 Portal Core runs as one self-contained process on Windows x64: no IIS and no separately installed .NET runtime.
 The same executable runs interactively and as a service under NSSM. Windows steps below were written on Linux and
-must be verified on the server (marked **verify**).
+must be verified on the server (marked **verify**). Running as a Windows service under NSSM has **not yet been
+fully validated**; treat section 5 as untested guidance.
 
 ## 1. Build the package
 

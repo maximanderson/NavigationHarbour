@@ -60,3 +60,6 @@ obj/
 
 # Machine-local extra scan rules (names of internal systems). Never commit.
 scripts/release-scan-private.txt
+
+# Local Cline configuration
+.clinerules/

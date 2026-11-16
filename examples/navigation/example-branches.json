@@ -1,0 +1,24 @@
+[
+  {
+    "title": "SITES",
+    "branches": [
+      { "title": "RIVERTON TREATMENT PLANT", "navID": "water-plant" },
+      { "title": "LAKESIDE PUMP STATION", "navID": "water-pumps" },
+      { "title": "SOLAR ARRAY OUTPUT", "navID": "energy-solar" }
+    ]
+  },
+  {
+    "title": "THEMES",
+    "branches": [
+      { "title": "WATER TREATMENT", "navID": "water" },
+      { "title": "ENERGY", "navID": "energy" },
+      { "title": "OPERATIONS REPORTS", "navID": "reports" }
+    ]
+  },
+  {
+    "title": "Home",
+    "branches": [
+      { "title": "Restore menu", "navID": "riverton" }
+    ]
+  }
+]

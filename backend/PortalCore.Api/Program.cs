@@ -289,8 +289,18 @@ app.MapPost("/api/usage", async (UsageLog log, PortalDbContext db, HttpContext h
 .WithName("LogUsage");
 
 // POST /api/ai/query
-app.MapPost("/api/ai/query", async (HttpContext http, AiQueryService aiQueryService, ILogger<Program> logger) =>
+app.MapPost("/api/ai/query", async (
+    HttpContext http,
+    AiQueryService aiQueryService,
+    Microsoft.Extensions.Options.IOptions<AiSettings> aiOptions,
+    ILogger<Program> logger) =>
 {
+    // Experimental AI is disabled by default: answer 404 before reading the body or touching any provider.
+    if (!aiOptions.Value.Enabled)
+    {
+        return Results.NotFound(new { error = "Not found" });
+    }
+
     using var reader = new StreamReader(http.Request.Body);
     var body = await reader.ReadToEndAsync();
 
@@ -338,8 +348,15 @@ app.MapPost("/api/ai/query", async (HttpContext http, AiQueryService aiQueryServ
 app.MapGet("/api/knowledge/search", async (
     string? q,
     KnowledgeRetrievalService knowledgeService,
+    Microsoft.Extensions.Options.IOptions<AiSettings> aiOptions,
     ILogger<Program> logger) =>
 {
+    // Knowledge search belongs to the experimental AI subsystem: 404 while it is disabled.
+    if (!aiOptions.Value.Enabled)
+    {
+        return Results.NotFound(new { error = "Not found" });
+    }
+
     if (string.IsNullOrWhiteSpace(q))
     {
         logger.LogWarning("Knowledge search request with empty query");

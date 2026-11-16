@@ -3,12 +3,12 @@
 A ready-to-run demonstration package, `PortalCore-win-x64-vX.Y.Z.zip`. It is self-contained: no .NET, Node.js,
 Visual Studio or IIS is needed on the PC. Everything in it is fictional demonstration data ("Aquaville").
 
-## 1. Download from a private GitHub Release
+## 1. Download from a GitHub Release
 
 1. Open the repository on GitHub, then **Releases**, and choose the version.
 2. Download two files: `PortalCore-win-x64-vX.Y.Z.zip` and `PortalCore-win-x64-vX.Y.Z.zip.sha256`.
-   (A private repository needs a signed-in account with access. Whether a release may be downloaded to a work PC is
-   decided by your organisation's information-security rules, not by GitHub's privacy setting.)
+   (If the repository or release is access-restricted, you need a signed-in account with access. Whether a release may be downloaded to a work PC is
+   decided by your organisation's information-security rules, not by the repository's visibility setting.)
 
 ### Verify the download
 
@@ -59,6 +59,9 @@ Open `http://127.0.0.1:5247/`. Stop with Ctrl+C. Check the demonstration:
   The AI assistant is switched off in the demonstration configuration.
 
 ## 6. Install the service manually with NSSM
+
+> **Note:** Windows service deployment has not yet been fully validated for this pre-release. Test it first on a
+> non-production machine.
 
 NSSM (nssm.cc) is a separate download and is not included. Use its window, as an Administrator:
 

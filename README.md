@@ -255,7 +255,8 @@ dotnet test PortalCore.sln                   # backend tests
   [renderer.iframe]
   # empty "allow": no extra browser permissions for framed pages
   allow =
-  referrerPolicy = strict-origin-when-cross-origin```
+  referrerPolicy = strict-origin-when-cross-origin
+  ```
 
 ### Why a dashboard might not appear
 
@@ -300,10 +301,10 @@ This is a potential direction rather than an implementation commitment. Any futu
 
 ## Status
 
-- A private Windows x64 test build (`v1.0.0`) has been published as a pre-release. It uses fictional demonstration data only, and has not yet been validated as a Windows service.
+- A Windows x64 test build (`v1.0.0`) has been published as a pre-release. It uses fictional demonstration data only, and has not yet been validated as a Windows service.
 - Not yet implemented: right, top and bottom navigation panels, the `list`, `tabs` and `buttons` navigation types, and `article` and `download` configuration from `portal.ini`.
 - Theme roadmap: CSS variables for the colours, custom theme files, and a compact tree theme.
 
 ## License
 
-No licence has been chosen yet. Until one is added to this repository, all rights are reserved.
+Portal Core is licensed under the MIT License. See [LICENSE](LICENSE) for details.

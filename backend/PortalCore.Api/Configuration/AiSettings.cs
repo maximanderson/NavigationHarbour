@@ -2,7 +2,7 @@ namespace PortalCore.Api.Configuration;
 
 public class AiSettings
 {
-    public bool Enabled { get; set; } = true;
+    public bool Enabled { get; set; } = false;
     public string Provider { get; set; } = "Ollama";
     public string KnowledgeFolder { get; set; } = "Data/knowledge";
     public string PromptFolder { get; set; } = "Data/prompts";

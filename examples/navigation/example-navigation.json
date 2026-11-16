@@ -1,0 +1,55 @@
+[
+  {
+    "id": "riverton",
+    "title": "Riverton Utilities (Example)",
+    "children": [
+      {
+        "id": "water",
+        "title": "Water Treatment",
+        "children": [
+          {
+            "id": "water-plant",
+            "title": "Riverton Treatment Plant",
+            "children": [
+              { "id": "water-plant-overview", "title": "Plant Overview", "url": "https://grafana.example.com/d/riverton-overview" },
+              { "id": "water-plant-filtration", "title": "Filtration", "url": "https://grafana.example.com/d/riverton-filtration" },
+              { "id": "water-plant-dosing", "title": "Chemical Dosing", "url": "https://grafana.example.com/d/riverton-dosing" }
+            ]
+          },
+          {
+            "id": "water-pumps",
+            "title": "Lakeside Pump Station",
+            "children": [
+              { "id": "water-pumps-overview", "title": "Pump Overview", "url": "https://grafana.example.com/d/lakeside-pumps" },
+              { "id": "water-pumps-flow", "title": "Flow and Pressure", "url": "https://grafana.example.com/d/lakeside-flow" }
+            ]
+          },
+          { "id": "water-quality", "title": "Water Quality Summary (loads example.com)", "url": "https://example.com/" }
+        ]
+      },
+      {
+        "id": "energy",
+        "title": "Energy",
+        "children": [
+          { "id": "energy-consumption", "title": "Energy Consumption", "url": "https://powerbi.example.com/reports/energy-consumption" },
+          {
+            "id": "energy-solar",
+            "title": "Solar Array Output",
+            "children": [
+              { "id": "energy-solar-north", "title": "Array North", "url": "https://grafana.example.com/d/solar-north" },
+              { "id": "energy-solar-south", "title": "Array South", "url": "https://grafana.example.com/d/solar-south" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "reports",
+        "title": "Operations Reports",
+        "children": [
+          { "id": "reports-daily", "title": "Daily Operations Summary", "url": "https://pivision.example.com/#/Displays/1001/DailySummary" },
+          { "id": "reports-incidents", "title": "Incident Log", "url": "https://reports.example.com/incidents" }
+        ]
+      }
+    ]
+  }
+]
