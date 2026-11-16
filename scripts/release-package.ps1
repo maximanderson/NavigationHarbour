@@ -60,6 +60,10 @@ function Build-Release([string]$Root, [string]$Out, [string]$Version) {
   foreach ($d in $ReleaseDocs) { Copy-Item (Join-Path $Root "docs\$d.md") (Join-Path $pkg "docs\$d.md") }
   Copy-Item (Join-Path $Root "deploy\START-HERE.txt") (Join-Path $pkg "START-HERE.txt")
   [System.IO.File]::WriteAllText((Join-Path $pkg "VERSION.txt"), "Portal Core $Version (win-x64, self-contained)`r`n")
+  Copy-Item (Join-Path $Root "LICENSE") $pkg
+  Copy-Item (Join-Path $Root "THIRD-PARTY-NOTICES.md") $pkg
+  New-Item -ItemType Directory -Force -Path (Join-Path $pkg "bin\licenses") | Out-Null
+  Copy-Item (Join-Path $Root "deploy\licenses\*") (Join-Path $pkg "bin\licenses")   # full third-party licence texts
 
   Write-Host "== Safety scan (rules: scripts\release-scan-rules.txt)"
   Invoke-ReleaseScan -Stage $stage -Root $Root

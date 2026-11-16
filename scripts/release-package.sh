@@ -87,6 +87,8 @@ stage_release() {
   for d in "${RELEASE_DOCS[@]}"; do cp "$root/docs/$d.md" "$pkg/docs/$d.md"; done
   cp "$root/deploy/START-HERE.txt" "$pkg/START-HERE.txt"
   printf 'Portal Core %s (win-x64, self-contained)\r\n' "$version" > "$pkg/VERSION.txt"
+  cp "$root/LICENSE" "$root/THIRD-PARTY-NOTICES.md" "$pkg/"
+  mkdir -p "$pkg/bin/licenses" && cp "$root"/deploy/licenses/* "$pkg/bin/licenses/"   # full third-party licence texts
 }
 
 
