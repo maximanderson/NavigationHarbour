@@ -1,4 +1,4 @@
-# Manual acceptance test: Windows package (v1.1.0 release candidate)
+# Manual acceptance test: Windows package (v1.1.0)
 
 Repository-only checklist (it is not part of the release package). Use a **separate installation home for each
 scenario**, so that one scenario can never change the starting state of another. Never test against a production

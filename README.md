@@ -156,7 +156,7 @@ The folders that browsers can reach are `public/config`, `public/navigation` and
 | Run the **Windows package** (download, extract, start, install as a service with NSSM) | [docs/release-package.md](docs/release-package.md) and [docs/windows-deployment.md](docs/windows-deployment.md) |
 | Understand **`server.ini`** (address, port, HTTPS certificates, paths, logging) | [docs/server-configuration.md](docs/server-configuration.md) |
 | Understand **standalone hosting** and what is web-accessible | [docs/standalone-hosting.md](docs/standalone-hosting.md) |
-| Run behind a **reverse proxy** (IIS ARR, Nginx, Apache) | [docs/reverse-proxy.md](docs/reverse-proxy.md) |
+| Run behind a **reverse proxy** (IIS ARR, Nginx, Apache), or **share an existing HTTPS website** with other web applications | [docs/reverse-proxy.md](docs/reverse-proxy.md) |
 | **Back up and restore** the database | [docs/backup-restore.md](docs/backup-restore.md) |
 | Configure **renderers and iframe options** | [docs/renderer-system.md](docs/renderer-system.md) |
 | Write **navigation files** in detail | [docs/navigation.md](docs/navigation.md) |
@@ -315,11 +315,12 @@ Downloads are on the [GitHub Releases](https://github.com/maximanderson/Navigati
 
 | Release | Product name | Status |
 |---|---|---|
-| **v1.0.1** | Portal Core | **Stable.** Adds client IP address resolution behind trusted reverse proxies; manually validated on Windows with a same-host IIS ARR proxy. Uses the Portal Core names. |
-| **v1.1.0-rc.1** | Navigation Harbour | **Pre-release** for acceptance testing. Adds the Navigation Harbour product identity. It is not a stable release. |
+| **v1.1.0** | Navigation Harbour | **Stable.** Adds the Navigation Harbour product identity, configurable at build time, and stable functional names. Manually accepted on Windows. Backward compatible with Portal Core installations (see [docs/windows-deployment.md](docs/windows-deployment.md)). |
+| v1.1.0-rc.1 | Navigation Harbour | Release candidate for v1.1.0. Superseded. |
+| v1.0.1 | Portal Core | Previous stable release. Adds client IP address resolution behind trusted reverse proxies; manually validated on Windows with a same-host IIS ARR proxy. Uses the Portal Core names. |
 
-- Both use fictional demonstration data only, and neither has been validated as a Windows service.
-- The Navigation Harbour name will become the stable release name only when a stable release is published. Until then, v1.0.1 remains the stable release.
+- The demonstration data is fictional. Running as a Windows service (NSSM) has not yet been validated for these releases.
+- Portal Core is the former name of this project. The historical releases keep their original names.
 - Not yet implemented: right, top and bottom navigation panels, the `list`, `tabs` and `buttons` navigation types, and `article` and `download` configuration from `portal.ini`.
 - A possible future direction is a locally hosted AI assistant that helps people find information. The current releases do not include one, and this is not a commitment.
 - Theme roadmap: CSS variables for the colours, custom theme files, and a compact tree theme.

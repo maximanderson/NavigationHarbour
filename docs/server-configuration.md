@@ -342,5 +342,5 @@ Planned for later stages: secrets such as AI provider keys.
 
 - `server.ini` is outside every web-served directory and is never mapped to a URL.
 - Startup rejects a `[paths] public` that would contain `conf`, `data`, `logs` or `ai`.
-- Restrict the `conf` folder with NTFS permissions (Administrators: Full Control; the Portal
-  Core service account: Read). The application does not manage permissions.
+- Restrict the `conf` folder with NTFS permissions (Administrators: Full Control; the Navigation
+  Harbour service account: Read). The application does not manage permissions.
