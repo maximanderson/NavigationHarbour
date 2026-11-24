@@ -1,6 +1,6 @@
 # Examples
 
-Reusable, fictional examples for Portal Core. Copy them, then replace the example addresses with your own dashboards.
+Reusable, fictional examples for Navigation Harbour. Copy them, then replace the example addresses with your own dashboards.
 
 | File | What it is |
 |---|---|
@@ -12,10 +12,10 @@ Reusable, fictional examples for Portal Core. Copy them, then replace the exampl
 
 | To use them with… | Copy |
 |---|---|
-| the **Windows package** | the two JSON files to `PortalCore/public/navigation/`, and `portal.ini` to `PortalCore/public/config/` (keep a copy of the one you replace) |
+| the **Windows package** | the two JSON files to `NavigationHarbour/public/navigation/`, and `portal.ini` to `NavigationHarbour/public/config/` (keep a copy of the one you replace) |
 | **development** | the same files to `frontend/public/navigation/` and `frontend/public/config/` |
 
-Then reload the page in your browser (Ctrl+F5 if you still see the old one). Portal Core does not need a restart for these files.
+Then reload the page in your browser (Ctrl+F5 if you still see the old one). Navigation Harbour does not need a restart for these files.
 
 ## The rules in one place
 

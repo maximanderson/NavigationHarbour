@@ -179,7 +179,7 @@ function buildPortalConfig(ini: IniData): PortalConfig {
   const config: PortalConfig = {
     logging: { ...DEFAULT_LOGGING_CONFIG },
     portal: {
-      title: portalSection.title ?? "PortalCore",
+      title: portalSection.title ?? __PRODUCT_NAME__,
       defaultScreen: portalSection.defaultScreen ?? "",
       theme: portalSection.theme ?? "light",
       tabsPosition: (portalSection.tabsPosition ?? "right") as TabsPosition,

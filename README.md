@@ -119,13 +119,13 @@ An iframe shows a page only if that page agrees to be framed. If the content are
 
 A Windows x64 self-contained package is available from [GitHub Releases](https://github.com/maximanderson/NavigationHarbour/releases). It includes the application and the required .NET runtime; it does not need Node.js or IIS on the target computer. See [Downloads and release status](#downloads-and-release-status) for which release to choose.
 
-Extract the package to a folder of your choice (for example, `D:\Applications\PortalCore`), open PowerShell in that directory and run:
+Extract the package to a folder of your choice (for example, `D:\Applications\NavigationHarbour`), open PowerShell in that directory and run:
 
 ```powershell
 Copy-Item conf\server.sample.ini conf\server.ini
-.\bin\PortalCore.Api.exe --home . --init-db
+.\bin\NavigationHarbour.exe --home . --init-db
 $env:ASPNETCORE_ENVIRONMENT = "Production"
-.\bin\PortalCore.Api.exe --home .
+.\bin\NavigationHarbour.exe --home .
 ```
 
 Open `http://127.0.0.1:5247/` in a browser. The packaged demonstration uses fictional data. The application runs in the foreground until stopped; installing it as a service is a separate step and has not yet been validated for these releases.
@@ -136,8 +136,8 @@ Requires the .NET 10 SDK, and Node.js 20.19+ or 22.12+:
 
 ```bash
 cd frontend && npm ci && npm run dev         # the portal, with Vite, on http://localhost:5173
-dotnet run --project backend/PortalCore.Api  # the API, on http://localhost:5247 (needed for the Usage Monitor)
-dotnet test PortalCore.sln                   # backend tests
+dotnet run --project backend/Portal.Api  # the API, on http://localhost:5247 (needed for the Usage Monitor)
+dotnet test Portal.sln                   # backend tests
 ```
 
 ## Configuration and documentation
@@ -156,7 +156,7 @@ The folders that browsers can reach are `public/config`, `public/navigation` and
 | Run the **Windows package** (download, extract, start, install as a service with NSSM) | [docs/release-package.md](docs/release-package.md) and [docs/windows-deployment.md](docs/windows-deployment.md) |
 | Understand **`server.ini`** (address, port, HTTPS certificates, paths, logging) | [docs/server-configuration.md](docs/server-configuration.md) |
 | Understand **standalone hosting** and what is web-accessible | [docs/standalone-hosting.md](docs/standalone-hosting.md) |
-| Run behind a **reverse proxy** (IIS ARR, Nginx, Apache) | [docs/reverse-proxy.md](docs/reverse-proxy.md) |
+| Run behind a **reverse proxy** (IIS ARR, Nginx, Apache), or **share an existing HTTPS website** with other web applications | [docs/reverse-proxy.md](docs/reverse-proxy.md) |
 | **Back up and restore** the database | [docs/backup-restore.md](docs/backup-restore.md) |
 | Configure **renderers and iframe options** | [docs/renderer-system.md](docs/renderer-system.md) |
 | Write **navigation files** in detail | [docs/navigation.md](docs/navigation.md) |
@@ -253,9 +253,9 @@ defaultUrl =
 **With the Windows package** (see [Getting started](#getting-started)): copy the example files into the package's public folder and reload the page in your browser. Navigation Harbour does not need a restart. If the browser keeps showing the old file, force a refresh (Ctrl+F5).
 
 ```text
-examples/navigation/example-navigation.json  ->  PortalCore/public/navigation/
-examples/navigation/example-branches.json    ->  PortalCore/public/navigation/
-examples/config/portal.ini                   ->  PortalCore/public/config/portal.ini   (keep a copy of the old one)
+examples/navigation/example-navigation.json  ->  NavigationHarbour/public/navigation/
+examples/navigation/example-branches.json    ->  NavigationHarbour/public/navigation/
+examples/config/portal.ini                   ->  NavigationHarbour/public/config/portal.ini   (keep a copy of the old one)
 ```
 
 **While developing**: copy the same files into `frontend/public/navigation/` and `frontend/public/config/`, then run `npm run dev` in `frontend/`. The example does not need the backend, because the Usage Monitor and the AI placeholder are switched off when `portal.ini` does not enable them.
@@ -315,11 +315,12 @@ Downloads are on the [GitHub Releases](https://github.com/maximanderson/Navigati
 
 | Release | Product name | Status |
 |---|---|---|
-| **v1.0.1** | Portal Core | **Stable.** Adds client IP address resolution behind trusted reverse proxies; manually validated on Windows with a same-host IIS ARR proxy. Uses the Portal Core names. |
-| **v1.1.0-rc.1** | Navigation Harbour | **Pre-release** for acceptance testing. Adds the Navigation Harbour product identity. It is not a stable release. |
+| **v1.1.0** | Navigation Harbour | **Stable.** Adds the Navigation Harbour product identity, configurable at build time, and stable functional names. Manually accepted on Windows. Backward compatible with Portal Core installations (see [docs/windows-deployment.md](docs/windows-deployment.md)). |
+| v1.1.0-rc.1 | Navigation Harbour | Release candidate for v1.1.0. Superseded. |
+| v1.0.1 | Portal Core | Previous stable release. Adds client IP address resolution behind trusted reverse proxies; manually validated on Windows with a same-host IIS ARR proxy. Uses the Portal Core names. |
 
-- Both use fictional demonstration data only, and neither has been validated as a Windows service.
-- The Navigation Harbour name will become the stable release name only when a stable release is published. Until then, v1.0.1 remains the stable release.
+- The demonstration data is fictional. Running as a Windows service (NSSM) has not yet been validated for these releases.
+- Portal Core is the former name of this project. The historical releases keep their original names.
 - Not yet implemented: right, top and bottom navigation panels, the `list`, `tabs` and `buttons` navigation types, and `article` and `download` configuration from `portal.ini`.
 - A possible future direction is a locally hosted AI assistant that helps people find information. The current releases do not include one, and this is not a commitment.
 - Theme roadmap: CSS variables for the colours, custom theme files, and a compact tree theme.

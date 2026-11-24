@@ -4,7 +4,7 @@
 ## `docs/component-hierarchy.md`
 
 ```md
-# PortalCore Component Hierarchy frontend
+# Navigation Harbour Component Hierarchy frontend
 
 ## High-Level Flow
 

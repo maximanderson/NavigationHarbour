@@ -1,6 +1,6 @@
 # System Logging
 
-Portal Core has three independent concerns:
+Navigation Harbour has three independent concerns:
 
 | Concern | Purpose | Configured by |
 |---|---|---|
@@ -26,16 +26,16 @@ level = info
 console = true
 ```
 
-- `enabled = false` turns off all Portal Core diagnostic logging.
-- `console = false` turns off browser console output from Portal Core's logger.
+- `enabled = false` turns off all Navigation Harbour diagnostic logging.
+- `console = false` turns off browser console output from Navigation Harbour's logger.
 - Invalid values fall back to the defaults above and a warning is logged.
 - Logs stay in the browser console; nothing is sent to the backend.
-- Only Portal Core's own logger is controlled. Browser-native errors and security warnings are never suppressed.
+- Only Navigation Harbour's own logger is controlled. Browser-native errors and security warnings are never suppressed.
 - If `portal.ini` itself cannot be loaded, the logger uses its defaults and the error is still
   shown in the UI regardless of logging settings.
 - Use `logger` from `src/services/logger.ts` instead of `console.*`.
 
-## Backend (`backend/PortalCore.Api/appsettings.json`)
+## Backend (`backend/Portal.Api/appsettings.json`)
 
 ```json
 "PortalLogging": {
@@ -66,8 +66,13 @@ Values can be overridden through environment variables, e.g. `PortalLogging__Lev
 
 ### Log files
 
-- Written by [Serilog](https://serilog.net/) (`Serilog.AspNetCore`) to `<directory>/portalcore-YYYYMMDD.log`.
+- Written by [Serilog](https://serilog.net/) (`Serilog.AspNetCore`) to `<directory>/application-YYYYMMDD.log`.
 - Rotation: daily, and when `MaxFileSizeMb` is exceeded. Retention: `RetainDays`.
+- **File name change.** Earlier versions wrote `portalcore-YYYYMMDD.log`. New files are named `application-YYYYMMDD.log`.
+  Existing `portalcore-*.log` files are kept, but they are not recognised by the new pattern, so the retention setting no longer
+  deletes them: remove them manually when you no longer need them. External log collectors, scheduled tasks or monitoring rules
+  that watch `portalcore-*.log` must be changed to `application-*.log` (or `*.log`), otherwise they will silently see no new entries.
+  The NSSM files `nssm-stdout.log` and `nssm-stderr.log` are not affected.
 - `logs/` is excluded from Git. A directory inside the public web root (`wwwroot`) is refused and
   the default `logs` directory is used instead.
 - If the log file cannot be written (permissions, disk full), the portal keeps running; Serilog

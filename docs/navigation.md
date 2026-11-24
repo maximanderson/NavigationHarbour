@@ -27,7 +27,7 @@ A file is a JSON array of nodes:
 
 ## Node ID convention: IDs are strings
 
-`TreeNode.id` is a **string** everywhere in Portal Core (frontend types, tree expansion, search,
+`TreeNode.id` is a **string** everywhere in Navigation Harbour (frontend types, tree expansion, search,
 branch lookup, Usage Monitor `nodeId`, and the backend `UsageLog.NodeId` column).
 
 - **Preferred form:** a string. Generated navigation (for example from AVEVA PI AF) should use the

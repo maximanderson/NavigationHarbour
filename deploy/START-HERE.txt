@@ -1,15 +1,15 @@
-PORTAL CORE - DEMONSTRATION PACKAGE
-===================================
+{{ProductName}} - DEMONSTRATION PACKAGE
+==========================================
 
-This folder is a complete, ready-to-run Portal Core for Windows x64. You do NOT need to install
+This folder is a complete, ready-to-run {{ProductName}} for Windows x64. You do NOT need to install
 .NET, Node.js, Visual Studio or IIS. All data in this package is fictional ("Aquaville").
 
 Do not run it from inside the ZIP. Extract the ZIP first (right-click > Extract All), for example to
-C:\PortalCore, so that this file is at C:\PortalCore\START-HERE.txt. Use a path without spaces.
+C:\{{TechnicalName}}, so that this file is at C:\{{TechnicalName}}\START-HERE.txt. Use a path without spaces.
 
 QUICK START (interactive, about 2 minutes)
 ------------------------------------------
-Open PowerShell in the PortalCore folder (Shift + right-click in the folder > "Open PowerShell window here"):
+Open PowerShell in the {{TechnicalName}} folder (Shift + right-click in the folder > "Open PowerShell window here"):
 
   1. Create your private configuration from the sample:
 
@@ -17,21 +17,21 @@ Open PowerShell in the PortalCore folder (Shift + right-click in the folder > "O
 
   2. Create the (empty) database:
 
-       .\bin\PortalCore.Api.exe --home . --init-db
+       .\bin\{{TechnicalName}}.exe --home . --init-db
 
   3. Check the configuration (optional):
 
-       .\bin\PortalCore.Api.exe --home . --check-config
+       .\bin\{{TechnicalName}}.exe --home . --check-config
 
-  4. Start Portal Core:
+  4. Start {{ProductName}}:
 
        $env:ASPNETCORE_ENVIRONMENT = "Production"
-       .\bin\PortalCore.Api.exe --home .
+       .\bin\{{TechnicalName}}.exe --home .
 
   5. Open a browser at   http://127.0.0.1:5247/
-     Stop Portal Core with Ctrl+C in the PowerShell window.
+     Stop {{ProductName}} with Ctrl+C in the PowerShell window.
 
-If Windows SmartScreen or antivirus warns about PortalCore.Api.exe, the file is unsigned. Verify the
+If Windows SmartScreen or antivirus warns about {{TechnicalName}}.exe, the file is unsigned. Verify the
 download first (see "Verify the download" in docs\release-package.md), then choose "More info > Run anyway"
 only if your IT policy allows it.
 
@@ -39,7 +39,7 @@ WHAT YOU SHOULD SEE
 -------------------
 Three tabs: Operations (a navigation tree with search), Regions (a Branch Screen: pick a region and the
 tree narrows to it; "Restore menu" shows everything again) and Reports (a static page). Clicking a leaf
-item is recorded by the Usage Monitor in data\portalcore.db. The content area stays empty: no pages are
+item is recorded by the Usage Monitor in data\usage.db. The content area stays empty: no pages are
 loaded into frames in this demonstration.
 
 WHERE THINGS ARE

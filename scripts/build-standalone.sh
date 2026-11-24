@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds Portal Core for standalone hosting (one Kestrel process serves the frontend, the API and the public files).
+# Builds the product (name from product.json) for standalone hosting (one Kestrel process serves the frontend, the API and the public files).
 #
 # Usage: scripts/build-standalone.sh [--windows] [--release --version X.Y.Z] [output-directory]
 #
@@ -7,10 +7,10 @@
 #   --windows    Windows x64, self-contained: no IIS and no installed .NET runtime needed on the server.
 #                Not single-file, not trimmed. Can be built on Linux or Windows.
 #   --release    (with --windows and --version) the shareable package: demonstration data only, an explicit
-#                file allowlist, a safety scan, and artifacts/release/PortalCore-win-x64-vX.Y.Z.zip + .sha256.
+#                file allowlist, a safety scan, and artifacts/release/<TechnicalName>-win-x64-vX.Y.Z.zip + .sha256.
 #
-# Result (the Portal Core home):
-#   bin/       published backend (PortalCore.Api.exe with --windows), the React build in bin/wwwroot
+# Result (the product home):
+#   bin/       published backend (<TechnicalName>.exe with --windows), the React build in bin/wwwroot
 #   conf/      server.sample.ini only; server.ini is private, created by the administrator, never overwritten
 #   public/    config/ (standalone portal.ini), navigation/, content/ - NEW installation only, never overwritten
 #   data/ logs/ backups/ certs/ ai/ docs/     empty directories (ai/ gets the sample knowledge and prompts once)
@@ -35,7 +35,10 @@ while [ $# -gt 0 ]; do
 done
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-project="$root/backend/PortalCore.Api"
+project="$root/backend/Portal.Api"
+
+source "$root/scripts/product-identity.sh"
+load_product_identity
 
 # --release: a versioned, shareable package with DEMONSTRATION data only (see docs/release-package.md).
 # It never copies the development navigation, configuration or AI files. Handled completely by the block below.
@@ -48,7 +51,7 @@ if $release; then
   exit 0
 fi
 
-out="$(mkdir -p "${out_arg:-$root/artifacts/PortalCore}" && cd "${out_arg:-$root/artifacts/PortalCore}" && pwd)"
+out="$(mkdir -p "${out_arg:-$root/artifacts/$PRODUCT_TECHNICAL_NAME}" && cd "${out_arg:-$root/artifacts/$PRODUCT_TECHNICAL_NAME}" && pwd)"
 
 echo "== Frontend build"
 cd "$root/frontend"
@@ -57,9 +60,9 @@ npm run build
 
 echo "== Backend publish -> $out/bin"
 if $windows; then
-  dotnet publish "$project/PortalCore.Api.csproj" -c Release -r win-x64 --self-contained true -o "$out/bin"
+  dotnet publish "$project/Portal.Api.csproj" -c Release -r win-x64 --self-contained true -o "$out/bin"
 else
-  dotnet publish "$project/PortalCore.Api.csproj" -c Release -o "$out/bin"
+  dotnet publish "$project/Portal.Api.csproj" -c Release -o "$out/bin"
 fi
 
 # The package must never contain a database.
@@ -106,4 +109,4 @@ for doc in windows-deployment standalone-hosting server-configuration backup-res
 done
 
 echo "Done: $out"
-echo "Next: copy conf/server.sample.ini to conf/server.ini and edit it, then run: PortalCore.Api --home <home> --init-db"
+echo "Next: copy conf/server.sample.ini to conf/server.ini and edit it, then run: $PRODUCT_TECHNICAL_NAME --home <home> --init-db"

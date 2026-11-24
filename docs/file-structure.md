@@ -1,4 +1,4 @@
-# PortalCore File Structure
+# Navigation Harbour File Structure
 
 frontend/
 src/

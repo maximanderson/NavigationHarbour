@@ -1,20 +1,20 @@
 # Standalone Hosting (one Kestrel process)
 
-In standalone mode a single Portal Core process serves everything: the React portal, the API and the public
+In standalone mode a single Navigation Harbour process serves everything: the React portal, the API and the public
 portal files. No IIS and no Vite server. Development is unchanged (Vite + Kestrel separately).
 
 ## Installation layout
 
 ```text
-PortalCore/                  <- Portal Core home (--home / PORTALCORE_HOME, or found next to bin/)
-├── bin/                     <- application (content root): PortalCore.Api.dll, appsettings.json, ...
+NavigationHarbour/                  <- Navigation Harbour home (--home / PORTAL_HOME, or found next to bin/)
+├── bin/                     <- application (content root): NavigationHarbour.dll, appsettings.json, ...
 │   └── wwwroot/             <- compiled React frontend (index.html, assets/)
 ├── conf/server.ini          <- private configuration
 ├── public/                  <- served: only config/, navigation/ and content/
 │   ├── config/portal.ini
 │   ├── navigation/*.json
 │   └── content/*.html
-├── data/portalcore.db       <- private
+├── data/usage.db       <- private
 ├── logs/  backups/  certs/  ai/   <- private
 ```
 
@@ -28,14 +28,14 @@ scripts/build-standalone.sh [output-directory]        (Linux / macOS)
 scripts\build-standalone.ps1 [-Out <directory>]       (Windows PowerShell)
 ```
 
-The default output is `artifacts/PortalCore`. The script runs the existing `npm run build` (Vite), `dotnet publish`
+The default output is `artifacts/NavigationHarbour`. The script runs the existing `npm run build` (Vite), `dotnet publish`
 into `<out>/bin`, and copies the Vite output into `<out>/bin/wwwroot`. `config/`, `navigation/` and `content/` are
 removed from `wwwroot` on purpose: they are served from `<out>/public`, so you can edit them without a rebuild.
 On a new installation `<out>/public` is filled once from `frontend/public`; an existing `public` is never touched.
 No executable packaging or service installation is part of this stage.
 
 First start of a new installation: copy `conf/server.sample.ini` to `<home>/conf/server.ini`, then run
-`PortalCore --home <home> --init-db`, then start Portal Core.
+`NavigationHarbour --home <home> --init-db`, then start Navigation Harbour.
 
 ## What is served
 
