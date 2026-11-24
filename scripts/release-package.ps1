@@ -8,13 +8,14 @@ $ReleaseDocs = @("release-package", "windows-deployment", "server-configuration"
 
 . (Join-Path $PSScriptRoot "release-scan.ps1")
 
-function Build-Release([string]$Root, [string]$Out, [string]$Version) {
+function Build-Release([string]$Root, [string]$Out, [string]$Version, $Product) {
+  $script:PackageDir = $Product.TechnicalName
   New-Item -ItemType Directory -Force -Path $Out | Out-Null
   $Out = (Resolve-Path $Out).Path
-  $project = Join-Path $Root "backend\PortalCore.Api"
+  $project = Join-Path $Root "backend\Portal.Api"
   $stage = Join-Path $Out "stage"
-  $pkg = Join-Path $stage "PortalCore"
-  $name = "PortalCore-win-x64-v$Version"
+  $pkg = Join-Path $stage $script:PackageDir
+  $name = "$($Product.TechnicalName)-win-x64-v$Version"
   $zip = Join-Path $Out "$name.zip"
   foreach ($f in @($zip, "$zip.sha256")) { if (Test-Path $f) { Remove-Item $f -Force } }
   if (Test-Path $stage) { Remove-Item -Recurse -Force $stage }
@@ -28,7 +29,7 @@ function Build-Release([string]$Root, [string]$Out, [string]$Version) {
   } finally { Pop-Location }
 
   Write-Host "== Backend publish (win-x64, self-contained, no .pdb)"
-  dotnet publish (Join-Path $project "PortalCore.Api.csproj") -c Release -r win-x64 --self-contained true -p:DebugType=None -p:DebugSymbols=false -o (Join-Path $pkg "bin")
+  dotnet publish (Join-Path $project "Portal.Api.csproj") -c Release -r win-x64 --self-contained true -p:Version=$Version -p:DebugType=None -p:DebugSymbols=false -o (Join-Path $pkg "bin")
   if ($LASTEXITCODE) { throw "dotnet publish failed" }
 
   Write-Host "== Frontend -> bin\wwwroot (allowlist)"
@@ -42,7 +43,7 @@ function Build-Release([string]$Root, [string]$Out, [string]$Version) {
   Write-Host "== Directories"
   foreach ($d in "conf", "data", "logs", "backups", "certs", "ai", "docs", "public") { New-Item -ItemType Directory -Force -Path (Join-Path $pkg $d) | Out-Null }
   foreach ($d in "data", "logs", "backups", "certs") {
-    [System.IO.File]::WriteAllText((Join-Path $pkg "$d\README.txt"), "Portal Core creates and uses files here. Keep this folder.`r`n")
+    [System.IO.File]::WriteAllText((Join-Path $pkg "$d\README.txt"), "$($Product.Name) creates and uses files here. Keep this folder.`r`n")
   }
   Copy-Item (Join-Path $project "conf\server.sample.ini") (Join-Path $pkg "conf\server.sample.ini")
 
@@ -58,8 +59,9 @@ function Build-Release([string]$Root, [string]$Out, [string]$Version) {
 
   Write-Host "== Documentation (allowlist)"
   foreach ($d in $ReleaseDocs) { Copy-Item (Join-Path $Root "docs\$d.md") (Join-Path $pkg "docs\$d.md") }
-  Copy-Item (Join-Path $Root "deploy\START-HERE.txt") (Join-Path $pkg "START-HERE.txt")
-  [System.IO.File]::WriteAllText((Join-Path $pkg "VERSION.txt"), "Portal Core $Version (win-x64, self-contained)`r`n")
+  $startHere = (Get-Content -Raw (Join-Path $Root "deploy\START-HERE.txt")).Replace("{{ProductName}}", $Product.Name).Replace("{{TechnicalName}}", $Product.TechnicalName)
+  [System.IO.File]::WriteAllText((Join-Path $pkg "START-HERE.txt"), $startHere)
+  [System.IO.File]::WriteAllText((Join-Path $pkg "VERSION.txt"), "$($Product.Name) $Version (win-x64, self-contained)`r`n")
   Copy-Item (Join-Path $Root "LICENSE") $pkg
   Copy-Item (Join-Path $Root "THIRD-PARTY-NOTICES.md") $pkg
   New-Item -ItemType Directory -Force -Path (Join-Path $pkg "bin\licenses") | Out-Null

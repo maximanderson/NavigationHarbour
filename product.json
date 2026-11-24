@@ -1,0 +1,6 @@
+{
+  "displayName": "Navigation Harbour",
+  "technicalName": "NavigationHarbour",
+  "tagline": "Unified navigation across trusted web applications.",
+  "description": "Navigation Harbour is an open-source, configurable navigation portal that orchestrates the presentation of existing web applications through iframes within a trusted environment."
+}

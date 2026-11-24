@@ -1,8 +1,8 @@
-# PortalCore
+# Navigation Harbour
 
 ## Purpose
 
-PortalCore is a config-driven enterprise portal designed to host and integrate:
+Navigation Harbour is a config-driven enterprise portal designed to host and integrate:
 
 - PI Vision dashboards
 - Grafana dashboards
@@ -114,7 +114,7 @@ Current development priorities:
 
 ## Design Philosophy
 
-PortalCore is intended to be:
+Navigation Harbour is intended to be:
 
 - Lightweight
 - Config-driven

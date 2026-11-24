@@ -4,7 +4,7 @@ import type { LoggingConfig, LogLevel } from "../types/portal";
  * Centralised application diagnostic logger.
  *
  * - Controlled only by the `[logging]` section of portal.ini.
- * - Controls Portal Core's own output only; browser-native errors and
+ * - Controls Navigation Harbour's own output only; browser-native errors and
  *   security warnings are never suppressed.
  * - Logs stay in the browser console; nothing is sent to the backend.
  * - Before configureLogger() is called (e.g. while portal.ini is loading)
@@ -31,7 +31,7 @@ const LEVEL_RANK: Record<LogLevel, number> = {
   error: 3,
 };
 
-const PREFIX = "[PortalCore]";
+const PREFIX = `[${__PRODUCT_TECHNICAL_NAME__}]`;
 
 let current: LoggingConfig = { ...DEFAULT_LOGGING_CONFIG };
 

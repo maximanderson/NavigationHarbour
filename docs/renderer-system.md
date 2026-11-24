@@ -1,10 +1,10 @@
-# PortalCore Renderer System
+# Navigation Harbour Renderer System
 
 ## Purpose
 
 The renderer system is responsible for displaying different types of portal content using a unified, extensible architecture.
 
-The system is config-driven and allows PortalCore to support multiple content types while keeping screen logic simple.
+The system is config-driven and allows Navigation Harbour to support multiple content types while keeping screen logic simple.
 
 ---
 
@@ -39,7 +39,7 @@ AiRenderer.tsx
     ↓
 POST /api/ai/query
     ↓
-PortalCore.Api
+Portal.Api
     ↓
 Placeholder AI response
 ```
@@ -150,7 +150,7 @@ Used for:
 [screen.info.content]
 renderer = article
 title = Information
-text = Welcome to PortalCore
+text = Welcome to Navigation Harbour
 ```
 
 ### Notes
@@ -280,7 +280,7 @@ http://localhost:5247/api/ai/query
 The current backend endpoint is implemented in:
 
 ```text
-backend/PortalCore.Api/Program.cs
+backend/Portal.Api/Program.cs
 ```
 
 Endpoint:
@@ -303,7 +303,7 @@ This confirms the end-to-end plumbing before adding real AI complexity.
 
 ## AI Renderer Design Principle
 
-`AiRenderer.tsx` should only handle the user interface and call the PortalCore backend.
+`AiRenderer.tsx` should only handle the user interface and call the Navigation Harbour backend.
 
 It should not directly connect to:
 
@@ -323,7 +323,7 @@ AiRenderer.tsx
     ↓
 POST /api/ai/query
     ↓
-PortalCore.Api
+Portal.Api
     ↓
 Local AI / RAG service
     ↓

@@ -1,6 +1,6 @@
 # Server Configuration (`server.ini`)
 
-Portal Core has two separate configuration files with different audiences:
+Navigation Harbour has two separate configuration files with different audiences:
 
 | File | Purpose | Visible to browsers? |
 |---|---|---|
@@ -20,18 +20,18 @@ Copy the sample to `server.ini` and edit it. `server.ini` is excluded from Git.
 Upgrades must never overwrite it.
 
 During development, `<home>` is the project directory, so the file is
-`backend/PortalCore.Api/conf/server.ini`.
+`backend/Portal.Api/conf/server.ini`.
 
 ### How the home directory is found
 
 In order; the working directory is never used:
 
 1. `--home <directory>` argument.
-2. `PORTALCORE_HOME` environment variable.
+2. `PORTAL_HOME` environment variable (the legacy `PORTALCORE_HOME` is still read; `PORTAL_HOME` wins when both are set).
 3. Installation layout: the executable is in `<home>/bin/` and `<home>` contains `conf`, `public` or `data`.
-4. Development: the project directory (found by walking up from the build output to `PortalCore.Api.csproj`).
+4. Development: the project directory (found by walking up from the build output to `Portal.Api.csproj`).
 
-An explicit `--home` or `PORTALCORE_HOME` that does not exist is an error.
+An explicit `--home` or `PORTAL_HOME` that does not exist is an error.
 
 ## Format
 
@@ -94,7 +94,7 @@ disabled, `[tls]` settings with `protocol = http` (ignored), and competing URL s
 ## HTTP and HTTPS (Kestrel, Stage 4)
 
 **When it applies.** If `protocol`, `http_addr` or `port` is set (in `server.ini`, an environment variable
-or the command line), Portal Core configures Kestrel itself and listens on **exactly one** endpoint:
+or the command line), Navigation Harbour configures Kestrel itself and listens on **exactly one** endpoint:
 `protocol://http_addr:port` (empty `http_addr` = all interfaces). If none of the three is set, nothing changes:
 `dotnet run` keeps using `launchSettings.json`, and `ASPNETCORE_URLS` / `--urls` work as before.
 
@@ -109,28 +109,28 @@ A `Kestrel:Endpoints` section would add more listeners, so it is an error togeth
 ```ini
 ; PFX (PKCS#12)
 [tls]
-cert_file = conf/portalcore.pfx
+cert_file = conf/portal.pfx
 cert_password = change-me
 
 ; PEM certificate + separate private key (cert_password only when the key is encrypted)
 [tls]
-cert_file = conf/portalcore.pem
-cert_key_file = conf/portalcore.key
+cert_file = conf/portal.pem
+cert_key_file = conf/portal.key
 ```
 
-- Relative paths are resolved against the Portal Core home, never the working directory.
+- Relative paths are resolved against the Navigation Harbour home, never the working directory.
 - A certificate path inside `[paths] public` is an error, so certificates are never served. Keep them in `conf`.
 - The certificate is loaded at startup with `X509CertificateLoader` (PFX), `CreateFromPemFile` or
   `CreateFromEncryptedPemFile` (PEM). It is re-imported in memory as PKCS#12, the usual way to make PEM keys
   usable by Kestrel on Windows. Windows has not been tested here; verify it during deployment.
 - **No fallback.** A missing, unreadable, expired, wrong-password or mismatched certificate stops startup
-  (exit code 2, "No listener was started"). Portal Core never serves plain HTTP instead of HTTPS, and never opens a second port.
+  (exit code 2, "No listener was started"). Navigation Harbour never serves plain HTTP instead of HTTPS, and never opens a second port.
 - `[tls]` settings with `protocol = http` are ignored with a warning.
 
 **Password.** `cert_password` may be written in `server.ini` (a private file: restrict access to the `conf` folder,
 see Security) or supplied from outside, which is preferred for production:
 
-- environment variable: `PORTALCORE_tls__cert_password=...` (or `--tls:cert_password=...`; user secrets in Development).
+- environment variable: `PORTAL_tls__cert_password=...` (or `--tls:cert_password=...`; user secrets in Development).
 - These rank above `server.ini` (see Precedence). No other interpolation syntax exists: `${VAR}` is not expanded.
 
 The password is never printed by `--print-config`, never written to the log and never put in an error message.
@@ -139,7 +139,7 @@ Messages say only that the password is missing or wrong.
 **Diagnostics.** `--check-config` / `--print-config` validate the protocol, address, port, that `cert_file` is
 set for https, that the files exist, are files and readable, and are not under `public`. They do **not** load the
 certificate, start Kestrel or touch SQLite, so a file that is not a valid certificate (or a wrong password)
-is found only when Portal Core starts. `--print-config` shows the effective endpoint.
+is found only when Navigation Harbour starts. `--print-config` shows the effective endpoint.
 
 **Limits.** No certificate renewal or reload (restart after replacing it), no client certificates, no HTTP-to-HTTPS
 redirect, no certificate store lookup. Self-signed certificates work but browsers will warn.
@@ -154,10 +154,19 @@ Lowest to highest:
 2. `appsettings.Development.json` (Development only)
 3. `conf/server.ini`
 4. User secrets (Development only)
-5. Environment variables, including `PORTALCORE_` variables
+5. Environment variables, including `PORTAL_` variables
 6. Command line
 
-`PORTALCORE_` variables use `__` for sections: `PORTALCORE_server__port=5300`.
+`PORTAL_` variables use `__` for sections: `PORTAL_server__port=5300`.
+
+**Legacy prefix.** Variables with the older `PORTALCORE_` prefix (including `PORTALCORE_HOME`) keep working. When the same
+key is set with both prefixes, the `PORTAL_` value wins. `PORTAL_` is the stable, product-independent prefix and will not
+change when the product is renamed.
+
+**Shared servers.** `PORTAL_` is a short, generic prefix. Only keys that match a real configuration section (for example
+`PORTAL_server__port`) have any effect, so unrelated variables are ignored, but another application on the same machine or
+service account that uses `PORTAL_` for its own purposes could unintentionally change this application. Check the
+environment of the service account (`--print-config` shows where each value came from), or set values in `server.ini`.
 Command line: `--server:port=5300`.
 
 Defaults for the `server.ini` settings are built into the application, so `appsettings.json` is unchanged.
@@ -180,19 +189,19 @@ so there is no second logging implementation and no second source of truth:
 A setting left out of `server.ini` keeps its `appsettings.json` value. Because environment variables,
 user secrets and the command line rank above `server.ini`, `PortalLogging__Level=debug` still wins; the
 startup check then prints a warning that the `server.ini` value is not in effect.
-Log format and file naming (`portalcore-YYYYMMDD.log`, size rollover) are unchanged.
+Log format and file naming (`application-YYYYMMDD.log`, size rollover) are unchanged.
 
 ### Home and content root are separate
 
 | | Meaning | Development (`dotnet run`) | Standalone installation |
 |---|---|---|---|
-| **Portal Core home** | Installation root: `conf`, `data`, `logs`, `public`, `ai` | The project directory | The folder that contains `bin/` |
+| **Navigation Harbour home** | Installation root: `conf`, `data`, `logs`, `public`, `ai` | The project directory | The folder that contains `bin/` |
 | **Content root** | ASP.NET Core content root: shipped `appsettings*.json` | The project directory | The `bin/` directory |
 
 The content root is chosen at startup from the location of the application, **never from the working
 directory**, so the shipped `appsettings.json` and `appsettings.{Environment}.json` load the same way
-whether Portal Core is started from the project folder, from `/tmp`, or by a Windows service whose
-working directory is `C:\Windows\System32`. `--home` and `PORTALCORE_HOME` move only the home; they do
+whether Navigation Harbour is started from the project folder, from `/tmp`, or by a Windows service whose
+working directory is `C:\Windows\System32`. `--home` and `PORTAL_HOME` move only the home; they do
 not change the content root. `--print-config` and `--check-config` print both, on separate lines.
 
 (Before Stage 3A.1 the content root was the working directory, so starting the DLL from another folder
@@ -202,7 +211,7 @@ silently skipped `appsettings.json` and fell back to built-in defaults.)
 
 | Source of the path | Relative paths resolve against |
 |---|---|
-| `server.ini` `[paths]` | **Portal Core home** |
+| `server.ini` `[paths]` | **Navigation Harbour home** |
 | `appsettings.json` (`PortalLogging:File:Directory`, `AiSettings:*Folder`) | The application content root (the project directory with `dotnet run`) |
 
 Both are the same directory in development, so nothing moves. In a standalone installation a
@@ -226,9 +235,9 @@ misconfigured server never runs half-configured.
 Neither command starts Kestrel, opens SQLite or starts any other service.
 
 ```bash
-dotnet run --project backend/PortalCore.Api -- --check-config
-dotnet run --project backend/PortalCore.Api -- --print-config
-dotnet run --project backend/PortalCore.Api -- --check-config --home /path/to/home
+dotnet run --project backend/Portal.Api -- --check-config
+dotnet run --project backend/Portal.Api -- --print-config
+dotnet run --project backend/Portal.Api -- --check-config --home /path/to/home
 ```
 
 - `--check-config`: validates and prints errors/warnings. Exit code `0` = valid, `2` = invalid.
@@ -260,17 +269,17 @@ Settings whose name has the word `password`, `passphrase`, `secret` or `token`, 
 
 ### Database location and startup safety (Stage 3A)
 
-`[paths] data` sets the **directory**; the file name is always `portalcore.db`.
+`[paths] data` sets the **directory**; the default file name is `usage.db` (see "Legacy database name" below).
 
 **One effective location**, highest priority first:
 
 1. `ConnectionStrings:PortalDb` from an environment variable, the command line or user secrets
    (`ConnectionStrings__PortalDb=...`). `[paths] data` is then ignored and a warning says so.
-2. `[paths] data` in `server.ini` (`<data>/portalcore.db`).
-3. `ConnectionStrings:PortalDb` in `appsettings.json` (shipped default `Data Source=portalcore.db`).
+2. `[paths] data` in `server.ini` (`<data>/usage.db`).
+3. `ConnectionStrings:PortalDb` in `appsettings.json` (shipped default `Data Source=usage.db`).
 
-A relative path is resolved against Portal Core home, never the working directory. Because the
-shipped default is relative, `dotnet run` still uses `<project>/portalcore.db`, the existing file.
+A relative path is resolved against Navigation Harbour home, never the working directory. Because the
+shipped default is relative, `dotnet run` still uses `<project>/usage.db`, the existing file.
 `--print-config` and `--check-config` show the resolved file, its state and where it came from.
 Connection strings must name a file (no `:memory:` or `file:` URIs) and must not set `Mode`; values
 are never printed, because a connection string can contain credentials.
@@ -288,7 +297,20 @@ are never printed, because a connection string can contain credentials.
 
 While running, the connection uses `Mode=ReadWrite`, so SQLite itself can never create a file.
 
-**Creating a database deliberately:** `PortalCore --init-db` (add `--home`, or configure `[paths] data`).
+**Legacy database name.** Installations created before the rename have `portalcore.db`. When the location comes from
+`[paths] data`, the shipped default or the built-in default (not from an explicit connection string), the file is chosen as follows:
+
+| In the data directory | Result |
+|---|---|
+| Only `usage.db` | `usage.db` is used. |
+| Only `portalcore.db` | `portalcore.db` keeps being used. It is never renamed, moved or copied; `--print-config` says it is a legacy file name. |
+| Neither | `usage.db` is the location; the rules in the table above decide whether it may be created (`--init-db` creates `usage.db`). |
+| Both | **Startup stops** (exit code 2) and so do `--check-config`, `--init-db` and the backup commands. Nothing is changed. Choose one: set the full file path in `ConnectionStrings:PortalDb` (for example `PORTAL_ConnectionStrings__PortalDb="Data Source=D:\NavigationHarbour\data\usage.db"`), or move the one you do not want out of the data directory. |
+
+An explicit connection string is used exactly as written and is never second-guessed. Backup, restore and the maintenance
+lock work on whichever file was chosen, with the same file name for `.maintenance.lock` and `.restore-*` files.
+
+**Creating a database deliberately:** `NavigationHarbour --init-db` (add `--home`, or configure `[paths] data`).
 It creates the schema in a missing or zero-byte file, creates at most the last directory level,
 leaves an existing database untouched (it reports it and exits 0), and never starts the web server.
 It is the only way to create a database outside the Development default.
@@ -297,7 +319,7 @@ Schema migrations are not implemented. An existing database is never altered by 
 
 **Backup and restore (Stage 3B.1)** are implemented as command-line commands (`--backup-db`,
 `--list-backups`, `--verify-backup <file>`, `--restore-db <file> [--yes]`, optional `--database <id>`).
-Backups go to `[paths] backups` (default `<home>/backups`). While it runs, Portal Core holds a shared
+Backups go to `[paths] backups` (default `<home>/backups`). While it runs, Navigation Harbour holds a shared
 maintenance lock on `<database>.maintenance.lock`; a restore needs it exclusively and is refused otherwise.
 The lock does not stop external SQLite tools. See [backup-restore.md](backup-restore.md) for the
 procedure, exit codes, limitations and manual recovery.
@@ -306,7 +328,7 @@ procedure, exit codes, limitations and manual recovery.
 
 | | Development (`dotnet run`, no `server.ini`) | Standalone installation (later stage) |
 |---|---|---|
-| Database | `<project>/portalcore.db` (existing file; created if missing) | `<home>/data/portalcore.db` (from `[paths] data`; never created automatically) |
+| Database | `<project>/usage.db` (existing file; created if missing) | `<home>/data/usage.db` (from `[paths] data`; never created automatically) |
 | Logs | `<project>/logs` | `<home>/logs` (from `[paths] logs`) |
 | AI knowledge / prompts | `<project>/Data/knowledge`, `<project>/Data/prompts` (unchanged) | `<home>/ai/knowledge`, `<home>/ai/prompts` (from `[paths] ai`) |
 | Log level and rolling | `appsettings.json` | `[log]` |

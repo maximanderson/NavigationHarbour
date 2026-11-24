@@ -1,6 +1,6 @@
 # Third-party notices
 
-Portal Core itself is licensed under the MIT License (see `LICENSE`).
+Navigation Harbour itself is licensed under the MIT License (see `LICENSE`).
 
 The Windows x64 distribution also contains the third-party software listed below. Each component remains under its
 own licence. The full licence texts are in the `bin/licenses/` folder of the distribution.
@@ -28,7 +28,7 @@ The two `THIRD-PARTY-NOTICES` files above are supplied by Microsoft and list the
 
 - The native SQLite library (`e_sqlite3.dll`, from SQLitePCLRaw.lib.e_sqlite3) contains SQLite, which is in the public domain.
 - Swashbuckle.AspNetCore.SwaggerUI embeds the Swagger UI web assets (Apache-2.0, Copyright SmartBear Software). In
-  the standard Portal Core configuration the Swagger pages are enabled only in the Development environment.
+  the standard Navigation Harbour configuration the Swagger pages are enabled only in the Development environment.
 - The Apache-2.0 licence text is in `bin/licenses/Apache-2.0.txt`.
 - The MIT licence text is the one in `bin/licenses/dotnet-LICENSE.txt` (Microsoft packages) and `bin/licenses/react-MIT.txt`.
 
@@ -42,4 +42,4 @@ Licence text: `bin/licenses/react-MIT.txt`. Build-time tools (Vite, TypeScript, 
 
 ## Fonts and images
 
-The distribution contains no third-party fonts or images. `favicon.svg` and `icons.svg` are part of Portal Core.
+The distribution contains no third-party fonts or images. `favicon.svg` and `icons.svg` are part of Navigation Harbour.

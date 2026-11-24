@@ -1,9 +1,9 @@
-# Builds Portal Core for standalone hosting (see build-standalone.sh for the layout and the reasoning).
+# Builds the product (name from product.json) for standalone hosting (see build-standalone.sh for the layout and the reasoning).
 #
-# Usage: scripts\build-standalone.ps1 [-Windows] [-Out <output-directory>]     (default: artifacts\PortalCore)
+# Usage: scripts\build-standalone.ps1 [-Windows] [-Out <output-directory>]     (default: artifacts\<TechnicalName>)
 #   -Windows   Windows x64 self-contained package (no IIS, no installed .NET runtime). Not single-file, not trimmed.
 #   -Release -Version X.Y.Z   (with -Windows) the shareable package: demonstration data only, an explicit file
-#              allowlist, a safety scan, and artifacts\release\PortalCore-win-x64-vX.Y.Z.zip + .sha256.
+#              allowlist, a safety scan, and artifacts\release\<TechnicalName>-win-x64-vX.Y.Z.zip + .sha256.
 param(
   [switch]$Windows,
   [switch]$Release,
@@ -13,20 +13,22 @@ param(
 $ErrorActionPreference = "Stop"
 
 $root = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot "product-identity.ps1")
+$product = Get-ProductIdentity $root
 
 if ($Release) {
   if (-not $Windows) { throw "-Release requires -Windows (the release package is Windows x64 self-contained)." }
   if ($Version -notmatch '^\d+\.\d+\.\d+(-[0-9A-Za-z.]+)?$') { throw "-Release requires -Version <major.minor.patch>, for example -Version 1.0.0" }
   if (-not $Out) { $Out = Join-Path $root "artifacts\release" }
   . (Join-Path $PSScriptRoot "release-package.ps1")
-  Build-Release -Root $root -Out $Out -Version $Version
+  Build-Release -Root $root -Out $Out -Version $Version -Product $product
   return
 }
 
-if (-not $Out) { $Out = Join-Path $root "artifacts\PortalCore" }
+if (-not $Out) { $Out = Join-Path $root "artifacts\$($product.TechnicalName)" }
 New-Item -ItemType Directory -Force -Path $Out | Out-Null
 $Out = (Resolve-Path $Out).Path
-$project = Join-Path $root "backend\PortalCore.Api"
+$project = Join-Path $root "backend\Portal.Api"
 
 Write-Host "== Frontend build"
 Push-Location (Join-Path $root "frontend")
@@ -36,9 +38,9 @@ try {
 
   Write-Host "== Backend publish -> $Out\bin"
   if ($Windows) {
-    dotnet publish (Join-Path $project "PortalCore.Api.csproj") -c Release -r win-x64 --self-contained true -o (Join-Path $Out "bin")
+    dotnet publish (Join-Path $project "Portal.Api.csproj") -c Release -r win-x64 --self-contained true -o (Join-Path $Out "bin")
   } else {
-    dotnet publish (Join-Path $project "PortalCore.Api.csproj") -c Release -o (Join-Path $Out "bin")
+    dotnet publish (Join-Path $project "Portal.Api.csproj") -c Release -o (Join-Path $Out "bin")
   }
   if ($LASTEXITCODE) { throw "dotnet publish failed" }
 
@@ -90,4 +92,4 @@ try {
 finally { Pop-Location }
 
 Write-Host "Done: $Out"
-Write-Host "Next: copy conf\server.sample.ini to conf\server.ini and edit it, then run: PortalCore.Api --home <home> --init-db"
+Write-Host "Next: copy conf\server.sample.ini to conf\server.ini and edit it, then run: $($product.TechnicalName) --home <home> --init-db"

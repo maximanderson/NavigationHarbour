@@ -1,0 +1,29 @@
+<Project>
+
+  <!--
+    Build-time product identity from product.json (the single source; there is no runtime dependency on the file).
+    MSBuild cannot parse JSON, so each value is read with a pattern that ignores whitespace, line breaks and property
+    order. Values must be plain strings without escape sequences. Missing or invalid values stop the build.
+    The test project ProductIdentityTests parses product.json with System.Text.Json and compares it with the built
+    assembly, so a divergence between this reader and a real JSON parser is caught by the test suite.
+    The version is NOT stored here: the release scripts pass -p:Version.
+  -->
+  <PropertyGroup>
+    <ProductJsonPath>$(MSBuildThisFileDirectory)product.json</ProductJsonPath>
+    <_ProductJsonText Condition="Exists('$(ProductJsonPath)')">$([System.IO.File]::ReadAllText('$(ProductJsonPath)'))</_ProductJsonText>
+    <ProductDisplayName>$([System.Text.RegularExpressions.Regex]::Match('$(_ProductJsonText)', '"displayName"\s*:\s*"([^"\\]*)"').Groups[1].Value)</ProductDisplayName>
+    <ProductTechnicalName>$([System.Text.RegularExpressions.Regex]::Match('$(_ProductJsonText)', '"technicalName"\s*:\s*"([^"\\]*)"').Groups[1].Value)</ProductTechnicalName>
+    <ProductTagline>$([System.Text.RegularExpressions.Regex]::Match('$(_ProductJsonText)', '"tagline"\s*:\s*"([^"\\]*)"').Groups[1].Value)</ProductTagline>
+    <ProductDescription>$([System.Text.RegularExpressions.Regex]::Match('$(_ProductJsonText)', '"description"\s*:\s*"([^"\\]*)"').Groups[1].Value)</ProductDescription>
+  </PropertyGroup>
+
+  <Target Name="ValidateProductIdentity" BeforeTargets="BeforeBuild;BeforeResolveReferences;CoreCompile">
+    <Error Condition="!Exists('$(ProductJsonPath)')" Text="product.json was not found at $(ProductJsonPath)." />
+    <Error Condition="'$(ProductDisplayName)' == ''" Text="product.json: 'displayName' is missing or empty (it must be a plain string)." />
+    <Error Condition="'$(ProductTagline)' == ''" Text="product.json: 'tagline' is missing or empty (it must be a plain string)." />
+    <Error Condition="'$(ProductDescription)' == ''" Text="product.json: 'description' is missing or empty (it must be a plain string)." />
+    <Error Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(ProductTechnicalName)', '^[A-Za-z][A-Za-z0-9]{0,39}$'))"
+           Text="product.json: 'technicalName' must start with a letter and contain only letters and digits (maximum 40 characters); it is used for the executable and the distribution folder." />
+  </Target>
+
+</Project>
