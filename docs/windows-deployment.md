@@ -35,6 +35,7 @@ Copy the folder to the server, for example `C:\PortalCore`. When upgrading, repl
 3. Check it: `bin\PortalCore.Api.exe --home C:\PortalCore --check-config`
    Details: `server-configuration.md`. HTTPS certificates go in `certs\` and `[tls]`.
 4. Behind IIS (ARR) or another reverse proxy? See `reverse-proxy.md` so that the real client address is recorded.
+   A same-host IIS ARR deployment has been manually validated; other proxies are documented but not manually validated.
 
 ## 3. Create or move the database
 

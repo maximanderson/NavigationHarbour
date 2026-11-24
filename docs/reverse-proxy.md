@@ -70,6 +70,8 @@ port = 5247
 
 ## Remote reverse proxy
 
+*Not manually validated; covered by automated tests only.*
+
 The proxy runs on another computer (or reaches Portal Core from a non-loopback address). Add it explicitly:
 
 ```ini
@@ -90,14 +92,19 @@ Also restrict access with a firewall so that only the proxy can connect to that 
 ## Proxy configuration examples
 
 > **Validation status.**
-> **Tested:** the Portal Core side only, by the automated tests in `PortalCore.Api.Tests` (`ForwardedHeadersTests`,
+> **Automated tests:** the Portal Core side is covered by `PortalCore.Api.Tests` (`ForwardedHeadersTests`,
 > `ProxyConfigTests`): configuration parsing, trust decisions for trusted and untrusted peers, IPv4 and IPv6, single
 > hop, and a real Kestrel host receiving a forwarded request over loopback.
-> **Not validated:** the IIS, Nginx and Apache snippets below. They are standard settings written from the products'
-> documentation. Treat them as **unvalidated examples** and verify them in your own environment with the procedure
-> under "Verification". Host names and addresses are placeholders.
+> **Manually validated:** a **same-host IIS ARR** deployment on Windows (ARR and Portal Core on the same computer,
+> `[proxy]` left empty). The original client addresses were correctly recorded in the usage database.
+> **Not manually validated:** the Nginx and Apache snippets below, and any **remote** proxy deployment (a proxy on
+> another computer listed in `[proxy]`). They are standard settings written from the products' documentation. Treat
+> them as **unvalidated examples** and verify them in your own environment with the procedure under "Verification".
+> Host names and addresses are placeholders.
 
 ### IIS with Application Request Routing (ARR)
+
+*Manually validated for the same-host case (v1.0.1).*
 
 1. Install URL Rewrite and ARR, and create a rewrite rule that forwards to `http://127.0.0.1:5247/{R:1}`.
 2. In IIS Manager, select the server node, open **Application Request Routing Cache**, then **Server Proxy Settings**,

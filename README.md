@@ -39,7 +39,7 @@ It is designed primarily for use within trusted corporate network environments. 
 
 ## Windows quick start
 
-A Windows x64 self-contained test package is available as the `v1.0.0` pre-release. The distribution includes the application and required .NET runtime; it does not require Node.js or IIS on the target computer.
+A Windows x64 self-contained test package is available from the [GitHub Releases](../../releases) page (latest: `v1.0.1`). The distribution includes the application and required .NET runtime; it does not require Node.js or IIS on the target computer.
 
 Extract the package to a folder of your choice (for example, `D:\Applications\PortalCore`), open PowerShell in that directory and run:
 
@@ -302,7 +302,7 @@ This is a potential direction rather than an implementation commitment. Any futu
 
 ## Status
 
-- A Windows x64 test build (`v1.0.0`) has been published as a pre-release. It uses fictional demonstration data only, and has not yet been validated as a Windows service.
+- Windows x64 builds are published on GitHub Releases (latest: `v1.0.1`, which adds client IP address resolution behind trusted reverse proxies; manually validated on Windows with a same-host IIS ARR proxy). They use fictional demonstration data only, and have not yet been validated as a Windows service.
 - Not yet implemented: right, top and bottom navigation panels, the `list`, `tabs` and `buttons` navigation types, and `article` and `download` configuration from `portal.ini`.
 - Theme roadmap: CSS variables for the colours, custom theme files, and a compact tree theme.
 
