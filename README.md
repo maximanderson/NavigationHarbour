@@ -221,6 +221,7 @@ A second JSON file turns the opening page of a screen into a menu of buttons. Pi
 | Run the **Windows package** (download, extract, start, install as a service with NSSM) | [docs/release-package.md](docs/release-package.md) and [docs/windows-deployment.md](docs/windows-deployment.md) |
 | Understand **`server.ini`** (address, port, HTTPS certificates, paths, logging) | [docs/server-configuration.md](docs/server-configuration.md) |
 | Understand **standalone hosting** and what is web-accessible | [docs/standalone-hosting.md](docs/standalone-hosting.md) |
+| Run behind a **reverse proxy** (IIS ARR, Nginx, Apache) and record the real client IP | [docs/reverse-proxy.md](docs/reverse-proxy.md) |
 | **Back up and restore** the database | [docs/backup-restore.md](docs/backup-restore.md) |
 | Configure **renderers and iframe options** | [docs/renderer-system.md](docs/renderer-system.md) |
 | Write **navigation files** in detail | [docs/navigation.md](docs/navigation.md) |

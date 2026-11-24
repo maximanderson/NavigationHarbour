@@ -10,7 +10,7 @@
 #     the build and no ZIP is written. The scan is an extra safeguard, not a replacement for the allowlist.
 
 # Documentation that ships in the package (explicit list, in docs/).
-RELEASE_DOCS=(release-package windows-deployment server-configuration standalone-hosting backup-restore logging)
+RELEASE_DOCS=(release-package windows-deployment server-configuration standalone-hosting reverse-proxy backup-restore logging)
 
 release_fail() { echo "RELEASE BUILD STOPPED: $*" >&2; exit 1; }
 

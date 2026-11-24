@@ -4,7 +4,7 @@
 # Safety in two layers: (1) ALLOWLIST - only the files named here are copied; (2) SCAN - every path and text file is
 # checked against scripts\release-scan-rules.txt and a hit stops the build before any ZIP is written.
 
-$ReleaseDocs = @("release-package", "windows-deployment", "server-configuration", "standalone-hosting", "backup-restore", "logging")
+$ReleaseDocs = @("release-package", "windows-deployment", "server-configuration", "standalone-hosting", "reverse-proxy", "backup-restore", "logging")
 
 . (Join-Path $PSScriptRoot "release-scan.ps1")
 

@@ -188,7 +188,15 @@ builder.Services.AddCors(options =>
 });
 
 
+// Client IP behind a reverse proxy: X-Forwarded-For is honoured only when the direct peer is a trusted
+// proxy (loopback by default, plus [proxy] trusted_proxies / trusted_networks). See docs/reverse-proxy.md.
+builder.Services.Configure<Microsoft.AspNetCore.Builder.ForwardedHeadersOptions>(
+    options => ForwardedHeadersSetup.Configure(options, serverConfig.Settings));
+
 var app = builder.Build();
+
+// Must run before anything that reads the client address (the usage endpoint, logging, exception handling).
+app.UseForwardedHeaders();
 
 // Global exception handling: log the failure, return a safe response
 // (no stack trace, no exception message, no secrets).

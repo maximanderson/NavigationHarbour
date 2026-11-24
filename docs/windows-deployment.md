@@ -34,6 +34,7 @@ Copy the folder to the server, for example `C:\PortalCore`. When upgrading, repl
    so the portal calls `/api/...` on the server it was loaded from (HTTP or HTTPS). Edit titles and screens here.
 3. Check it: `bin\PortalCore.Api.exe --home C:\PortalCore --check-config`
    Details: `server-configuration.md`. HTTPS certificates go in `certs\` and `[tls]`.
+4. Behind IIS (ARR) or another reverse proxy? See `reverse-proxy.md` so that the real client address is recorded.
 
 ## 3. Create or move the database
 

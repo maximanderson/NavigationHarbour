@@ -78,5 +78,8 @@ backend project, so no hosting is added and the existing ports and Vite behaviou
 
 ## Limits
 
-No HTTP compression or cache-busting policy beyond the ASP.NET Core defaults, no reverse proxy or sub-path hosting
+No HTTP compression or cache-busting policy beyond the ASP.NET Core defaults, no sub-path hosting
 (`root_url` must not contain a path), and no live reload of `wwwroot` (restart after replacing it).
+
+Running behind a reverse proxy at the root of a host is possible; see [reverse-proxy.md](reverse-proxy.md) for
+recording the real client address.

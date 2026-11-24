@@ -36,6 +36,10 @@ public static class ServerSchema
         // Data/prompts). When set, knowledge is <ai>/knowledge and prompts are <ai>/prompts.
         new("paths", "ai", null),
 
+        // Reverse proxies trusted to send X-Forwarded-For (comma-separated). Empty = loopback only (framework default).
+        new("proxy", "trusted_proxies", ""),
+        new("proxy", "trusted_networks", ""),
+
         new("log", "level", "info"),
         new("log", "console", "true"),
         new("log", "file", "true"),
@@ -62,6 +66,7 @@ public static class ServerSchema
     public static bool IsApplied(string section, string key) =>
         string.Equals(section, "log", StringComparison.OrdinalIgnoreCase) ||
         string.Equals(section, "tls", StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(section, "proxy", StringComparison.OrdinalIgnoreCase) ||
         (string.Equals(section, "server", StringComparison.OrdinalIgnoreCase) &&
          (string.Equals(key, "protocol", StringComparison.OrdinalIgnoreCase) ||
           string.Equals(key, "http_addr", StringComparison.OrdinalIgnoreCase) ||
@@ -132,6 +137,10 @@ public sealed class ServerSettings
     public string? PublicPath { get; set; }
     public string? AiPath { get; set; }
     public string? BackupsPath { get; set; }
+
+    // [proxy]: reverse proxies trusted to send X-Forwarded-For, in addition to loopback (always trusted).
+    public List<System.Net.IPAddress> TrustedProxies { get; set; } = new();
+    public List<System.Net.IPNetwork> TrustedNetworks { get; set; } = new();
 
     // [log]
     public string LogLevel { get; set; } = "info";

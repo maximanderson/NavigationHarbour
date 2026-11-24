@@ -49,6 +49,11 @@ logs = logs
 public = public
 ai = ai
 
+[proxy]
+; optional, only for a reverse proxy on another computer (see reverse-proxy.md)
+trusted_proxies =
+trusted_networks =
+
 [log]
 level = info
 console = true
@@ -77,6 +82,8 @@ retain_days = 14
 | `[tls] cert_password` | *(unset)* | Opens the PFX, or an encrypted PEM key. **Secret**: never printed or logged. |
 | `[paths] data` / `logs` / `public` | `data` / `logs` / `public` | Directory, relative to home or absolute |
 | `[paths] ai` | *(not set)* | Directory, relative to home or absolute. Knowledge is read from `<ai>/knowledge`, prompts from `<ai>/prompts`. When not set, the existing `Data/knowledge` and `Data/prompts` folders are used. |
+| `[proxy] trusted_proxies` | *(empty)* | Optional. Comma-separated IPv4/IPv6 addresses of reverse proxies whose `X-Forwarded-For` header is trusted, in addition to loopback (always trusted). See [reverse-proxy.md](reverse-proxy.md) |
+| `[proxy] trusted_networks` | *(empty)* | Optional. Comma-separated CIDR networks (`192.0.2.0/24`, `fd00::/64`) of trusted reverse proxies. `0.0.0.0/0` and `::/0` are refused |
 | `[log] level` | `info` | `debug`, `info`, `warning`, `error` |
 | `[log] console` / `file` | `true` | `true`, `false` |
 | `[log] max_file_size_mb` / `retain_days` | `10` / `14` | Whole number > 0 |
@@ -244,6 +251,7 @@ Settings whose name has the word `password`, `passphrase`, `secret` or `token`, 
 | `[paths] ai` | Yes | **Yes** (Stage 2) |
 | `[server] protocol`, `http_addr`, `port` | Yes | **Yes** (Stage 4), only when at least one of them is configured: Kestrel listener |
 | `[tls]` | Yes | **Yes** (Stage 4), for `protocol = https` |
+| `[proxy]` | Yes | **Yes**: trusted reverse proxies for the client IP address (`X-Forwarded-For`, one hop); see [reverse-proxy.md](reverse-proxy.md) |
 | `[server] domain`, `root_url` | Yes | No (validated only) |
 | `[paths] data` | Yes | **Yes** (Stage 3A): SQLite database location and startup safety |
 | `[paths] public` | Yes | **Yes** (Stage 5): only `config/`, `navigation/` and `content/` are served; see [standalone-hosting.md](standalone-hosting.md) |

@@ -41,6 +41,7 @@ public static partial class ServerConfiguration
                 "server" => ValidateServer(setting, raw, report.Settings, Fail),
                 "tls" => ValidateTls(setting, raw, report, Fail),
                 "paths" => ValidatePath(setting, raw, report, Fail),
+                "proxy" => ValidateProxy(setting, raw, report.Settings, Fail),
                 _ => ValidateLog(setting, raw, report.Settings, Fail),
             };
 
